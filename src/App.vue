@@ -10,6 +10,11 @@
 						>
 							System parameters
 						</router-link>
+						<router-link
+							:to="'/changelog'"
+						>
+							Changelog
+						</router-link>
 					</div>
 				</div>
 				<div class="nav-section nav-section-secondary">
