@@ -226,7 +226,6 @@ h1 {
 	flex: 5;
 }
 
-
 @media all and (max-width: 768px) {
 	.change {
 		flex-direction: column;
