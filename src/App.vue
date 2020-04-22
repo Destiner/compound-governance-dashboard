@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
 		<section id="nav">
-			<h1 id="app-title">Compound</h1>
+			<h1 id="app-title">
+				Compound
+			</h1>
 			<div>
 				<div class="nav-section">
 					<div class="nav-links">
