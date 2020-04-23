@@ -21,14 +21,11 @@
 						:key="change.id"
 						class="change"
 					>
-						<div class="target">
-							{{ formatAddress(change.target) }}
+						<div>
+							{{ formatTarget(change.target) }}: {{ formatSignature(change.signature) }}
 						</div>
-						<div class="signature">
-							{{ change.signature }}
-						</div>
-						<div class="calldata">
-							{{ formatCalldata(change.calldata) }}
+						<div>
+							{{ formatCalldata(change.signature, change.calldata) }}
 						</div>
 					</div>
 				</div>
@@ -48,7 +45,23 @@ import Formatter from '../utils/formatter.js';
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new ethers.providers.InfuraProvider('ropsten', infuraKey);
 
-const governorAddress = '0xc5BFEd3Bb38a3C4078d4f130F57Ca4c560551d45';
+const addresses = {
+	comptroller: '0xe03718b458a2E912141CF3fC8daB648362ee7463',
+	timelock: '0x18646F4a178404b1c986390Ac808236D37229A11',
+	governor: '0xc5BFEd3Bb38a3C4078d4f130F57Ca4c560551d45',
+	tokens: {
+		cBAT: '0xA253295eC2157B8b69C44b2cb35360016DAa25b1',
+		cDAI: '0x6CE27497A64fFFb5517AA4aeE908b1E7EB63B9fF',
+		cETH: '0x1d70B01A2C3e3B2e56FcdcEfe50d5c5d70109a5D',
+		cREP: '0x5D4373F8C1AF21C391aD7eC755762D8dD3CCA809',
+		cSAI: '0xCCaF265E7492c0d9b7C2f0018bf6382Ba7f0148D',
+		cTBTC: '0xB40d042a65Dd413Ae0fd85bECF8D722e16bC46F1',
+		cUSDC: '0x20572e4c090f15667cF7378e16FaD2eA0e2f3EfF',
+		cWBTC: '0x4D15eE7DE1f86248c986f5AE7dCE855b1c1A8806',
+		cZRX: '0x3A728dD027AD6F76Cdea227d5Cf5ba7ce9390A3d',
+		BAT: '0x9636246bf34E688c6652Af544418B38eB51D2c43',
+	},
+};
 
 export default {
 	data() {
@@ -81,11 +94,66 @@ export default {
 		formatAddress(value) {
 			return Formatter.formatAddress(value);
 		},
-		formatCalldata(value) {
-			if (value.length <= 66) {
-				return value;
+		
+		formatTarget(value) {
+			for (const contract in addresses) {
+				if (contract == 'tokens') {
+					const tokenAddresses = addresses.tokens;
+					for (const token in tokenAddresses) {
+						const tokenAddress = tokenAddresses[token];
+						if (tokenAddress == value) {
+							return token;
+						}
+					}
+				}
+				const contractAddress = addresses[contract];
+				if (contractAddress == value) {
+					return contract;
+				}
 			}
-			return `${value.substr(0, 66)}…`;
+		},
+		formatSignature(value) {
+			const signatureMap = {
+				'_addReserves(uint256)': 'Add reserves',
+				'_reduceReserves(uint256)': 'Reduce reserves',
+				'_setBorrowPaused(bool)': 'Set borrow paused',
+				'_setCollateralFactor(address,uint256)': 'Set collateral factor',
+				'_setLiquidationIncentive(uint256)': 'Set liquidation incentive',
+				'_setMaxAssets(uint256)': 'Set max assets',
+				'_setPriceOracle(address)': 'Set price oracle',
+				'_setReserveFactor(uint256)': 'Set reserve factor',
+				'_supportMarket(address)': 'Add market',
+				'accrueInterest()': 'Accrue interest',
+				'transfer(address,uint256)': 'Transfer token',
+			};
+			return signatureMap[value] || value;
+		},
+		formatCalldata(signature, calldata) {
+			const signatureMap = {
+				'_addReserves(uint256)': ['uint256'],
+				'_reduceReserves(uint256)': ['uint256'],
+				'_setBorrowPaused(bool)': ['bool'],
+				'_setCollateralFactor(address,uint256)': ['address', 'uint256'],
+				'_setLiquidationIncentive(uint256)': ['uint256'],
+				'_setMaxAssets(uint256)': ['uint256'],
+				'_setPriceOracle(address)': ['address'],
+				'_setReserveFactor(uint256)': ['uint256'],
+				'_supportMarket(address)': ['address'],
+				'accrueInterest()': [],
+				'transfer(address,uint256)': ['address', 'uint256'],
+			};
+
+			const abiCoder = new ethers.utils.AbiCoder();
+			const inputs = signatureMap[signature].map(param => {
+				return {
+					name: '',
+					type: param,
+				};
+			});
+
+			const params = abiCoder.decode(inputs, calldata);
+			const paramStrings = params.map(param => param.toString());
+			return paramStrings.join(',');
 		},
 		getEtherscanLink(txHash) {
 			return `https://etherscan.io/tx/${txHash}`;
@@ -98,7 +166,7 @@ export default {
 			const ethcallProvider = new ethcall.Provider();
 			await ethcallProvider.init(provider);
 
-			const governor = new ethcall.Contract(governorAddress, governorAbi);
+			const governor = new ethcall.Contract(addresses.governor, governorAbi);
 
 			const proposalCountCall = governor.proposalCount();
 			const data = await ethcallProvider.all([proposalCountCall]);
@@ -110,7 +178,7 @@ export default {
 			const ethcallProvider = new ethcall.Provider();
 			await ethcallProvider.init(provider);
 
-			const governor = new ethcall.Contract(governorAddress, governorAbi);
+			const governor = new ethcall.Contract(addresses.governor, governorAbi);
 
 			const calls = [];
 			for (let i = 1; i <= proposalCount; i++) {
@@ -139,6 +207,7 @@ export default {
 					const target = actions[0][i];
 					const signature = actions[2][i];
 					const calldata = actions[3][i];
+
 					const change = {
 						target,
 						signature,
@@ -206,24 +275,13 @@ h1 {
 
 .change {
 	padding: 0.5rem;
-	display: flex;
 	font-size: 14px;
+	display: flex;
+	justify-content: space-between;
 }
 
 .change:nth-child(even) {
 	background: #eceff1;
-}
-
-.target {
-	flex: 1;
-}
-
-.signature {
-	flex: 2;
-}
-
-.calldata {
-	flex: 5;
 }
 
 @media all and (max-width: 768px) {
