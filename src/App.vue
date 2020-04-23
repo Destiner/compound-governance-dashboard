@@ -23,7 +23,7 @@
 					<h2>Links</h2>
 					<div class="nav-links">
 						<a
-							href="https://github.com/Destiner/catflip"
+							href="https://github.com/Destiner/compound-governance-dashboard"
 							target="_blank"
 						>
 							Source code
