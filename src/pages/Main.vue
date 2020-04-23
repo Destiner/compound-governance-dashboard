@@ -216,21 +216,22 @@ import Converter from '../utils/converter.js';
 import EtherscanIcon from '../components/EtherscanIcon.vue';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
-const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
+const provider = new ethers.providers.InfuraProvider('ropsten', infuraKey);
 
 const addresses = {
-	comptroller: '0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B',
-	timelock: '0x6d903f6003cca6255D85CcA4D3B5E5146dC33925',
-	governor: '0xc0dA01a04C3f3E0be433606045bB7017A7323E38',
+	comptroller: '0xe03718b458a2E912141CF3fC8daB648362ee7463',
+	timelock: '0x18646F4a178404b1c986390Ac808236D37229A11',
+	governor: '0xc5BFEd3Bb38a3C4078d4f130F57Ca4c560551d45',
 	tokens: {
-		cBAT: '0x6c8c6b02e7b2be14d4fa6022dfd6d75921d90e4e',
-		cDAI: '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643',
-		cETH: '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5',
-		cREP: '0x158079ee67fce2f58472a96584a73c7ab9ac95c1',
-		cSAI: '0xf5dce57282a584d2746faf1593d3121fcac444dc',
-		cUSDC: '0x39aa39c021dfbae8fac545936693ac917d5e7563',
-		cWBTC: '0xc11b1268c1a384e55c48c2391d8d480264a3a7f4',
-		cZRX: '0xb3319f5d18bc0d84dd1b4825dcde5d5f7266d407',
+		cBAT: '0xA253295eC2157B8b69C44b2cb35360016DAa25b1',
+		cDAI: '0x6CE27497A64fFFb5517AA4aeE908b1E7EB63B9fF',
+		cETH: '0x1d70B01A2C3e3B2e56FcdcEfe50d5c5d70109a5D',
+		cREP: '0x5D4373F8C1AF21C391aD7eC755762D8dD3CCA809',
+		cSAI: '0xCCaF265E7492c0d9b7C2f0018bf6382Ba7f0148D',
+		cTBTC: '0xB40d042a65Dd413Ae0fd85bECF8D722e16bC46F1',
+		cUSDC: '0x20572e4c090f15667cF7378e16FaD2eA0e2f3EfF',
+		cWBTC: '0x4D15eE7DE1f86248c986f5AE7dCE855b1c1A8806',
+		cZRX: '0x3A728dD027AD6F76Cdea227d5Cf5ba7ce9390A3d',
 	},
 };
 
@@ -288,7 +289,7 @@ export default {
 		},
 		getEtherscanLink(contract) {
 			const contractAddress = addresses[contract];
-			return `https://etherscan.io/address/${contractAddress}`;
+			return `https://ropsten.etherscan.io/address/${contractAddress}`;
 		},
 		async _loadToken() {
 			const ethcallProvider = new ethcall.Provider();
