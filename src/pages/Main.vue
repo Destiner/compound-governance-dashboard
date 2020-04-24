@@ -19,7 +19,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatLiquidationIncentive(liquidationIncentiveMantissa) }}
+							{{ formatWadRate(liquidationIncentiveMantissa) }}
 						</div>
 						<div class="param">
 							<div>Liquidation incentive</div>
@@ -27,7 +27,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatCloseFactor(closeFactorMantissa) }}
+							{{ formatWadRatio(closeFactorMantissa) }}
 						</div>
 						<div class="param">
 							<div>Close factor</div>
@@ -155,7 +155,7 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatWadRate(token.collateralFactorMantissa) }}
+								{{ formatWadRatio(token.collateralFactorMantissa) }}
 							</div>
 							<div class="row-label">
 								Collateral factor
@@ -163,7 +163,7 @@
 						</div>
 						<div class="row">
 							<div class="row-number">
-								{{ formatWadRate(token.reserveFactorMantissa) }}
+								{{ formatWadRatio(token.reserveFactorMantissa) }}
 							</div>
 							<div class="row-label">
 								Reserve factor
@@ -271,10 +271,10 @@ export default {
 		formatAmount(value) {
 			return Formatter.formatMultiplier(Converter.fromWad(value));
 		},
-		formatLiquidationIncentive(value) {
+		formatWadRate(value) {
 			return Formatter.formatRate(Converter.fromWad(value));
 		},
-		formatCloseFactor(value) {
+		formatWadRatio(value) {
 			return Formatter.formatRatio(Converter.fromWad(value));
 		},
 		formatAddress(value) {
