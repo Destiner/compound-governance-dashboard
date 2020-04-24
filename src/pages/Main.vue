@@ -19,7 +19,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRate(liquidationIncentiveMantissa) }}
+							{{ formatLiquidationIncentive(liquidationIncentiveMantissa) }}
 						</div>
 						<div class="param">
 							<div>Liquidation incentive</div>
@@ -27,7 +27,7 @@
 					</div>
 					<div class="stat">
 						<div class="value">
-							{{ formatWadRate(closeFactorMantissa) }}
+							{{ formatCloseFactor(closeFactorMantissa) }}
 						</div>
 						<div class="param">
 							<div>Close factor</div>
@@ -271,12 +271,11 @@ export default {
 		formatAmount(value) {
 			return Formatter.formatMultiplier(Converter.fromWad(value));
 		},
-		formatWadRate(value) {
-			const ten = new BigNumber(10);
-			const base = ten.pow(18);
-			const rateNumber = base.plus(value);
-			const rate = rateNumber.toString();
-			return Formatter.formatRate(Converter.fromWad(rate));
+		formatLiquidationIncentive(value) {
+			return Formatter.formatRate(Converter.fromWad(value));
+		},
+		formatCloseFactor(value) {
+			return Formatter.formatRatio(Converter.fromWad(value));
 		},
 		formatAddress(value) {
 			return Formatter.formatAddress(value);
