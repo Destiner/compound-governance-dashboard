@@ -13,9 +13,9 @@
 							System parameters
 						</router-link>
 						<router-link
-							:to="'/changelog'"
+							:to="'/proposals'"
 						>
-							Changelog
+							Proposals
 						</router-link>
 						<router-link
 							:to="'/accounts'"

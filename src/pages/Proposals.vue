@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Changelog</h1>
+		<h1>Proposals</h1>
 		<div id="proposals">
 			<div
 				v-for="proposal in proposals"

@@ -4,14 +4,14 @@ import VueRouter from 'vue-router';
 import App from './App.vue';
 
 import Main from './pages/Main.vue';
-import Changelog from './pages/Changelog.vue';
+import Proposals from './pages/Proposals.vue';
 import Accounts from './pages/Accounts.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/', component: Main },
-	{ path: '/changelog', component: Changelog },
+	{ path: '/proposals', component: Proposals },
 	{ path: '/accounts', component: Accounts },
 ];
 
