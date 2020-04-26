@@ -199,7 +199,7 @@ export default {
 				const proposalData = data[3 * i + 1];
 				const state = data[3 * i + 2];
 
-				const startBlock = proposalData.startBlock.toNumber();
+				const id = proposalData.id.toNumber();
 
 				const changes = [];
 				const actionCount = actions[0].length;
@@ -217,25 +217,14 @@ export default {
 				}
 
 				const proposal = {
-					id: i + 1,
-					startBlock,
+					id,
 					state,
 					changes,
 				};
 				proposals.push(proposal);
-
-				proposals.sort((a, b) => {
-					const aStartBlock = a.startBlock;
-					const bStartBlock = b.startBlock;
-
-					return aStartBlock > bStartBlock
-						? -1
-						: aStartBlock < bStartBlock
-							? 1
-							: 0;
-				});
 			}
 
+			proposals.reverse();
 			return proposals;
 		}
 	},
