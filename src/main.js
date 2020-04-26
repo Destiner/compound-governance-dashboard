@@ -5,12 +5,14 @@ import App from './App.vue';
 
 import Main from './pages/Main.vue';
 import Changelog from './pages/Changelog.vue';
+import Accounts from './pages/Accounts.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/', component: Main },
 	{ path: '/changelog', component: Changelog },
+	{ path: '/accounts', component: Accounts },
 ];
 
 const router = new VueRouter({
