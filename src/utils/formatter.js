@@ -46,16 +46,16 @@ class Formatter {
 		return amountNumber.toLocaleString(undefined, options);
 	}
 
-	static formatMultiplier(amount) {
+	static formatMultiplier(amount, decimals=2) {
 		if (amount > 1e6) {
 			const shortAmount = amount/1e6;
-			return `${shortAmount.toFixed(2)}M`;
+			return `${shortAmount.toFixed(decimals)}M`;
 		}
 		if (amount > 1e3) {
 			const shortAmount = amount/1e3;
-			return `${shortAmount.toFixed(2)}K`;
+			return `${shortAmount.toFixed(decimals)}K`;
 		}
-		return amount.toFixed(2);
+		return amount.toFixed(decimals);
 	}
 }
 
