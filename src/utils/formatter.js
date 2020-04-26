@@ -16,11 +16,11 @@ class Formatter {
 		return `${percentage.toFixed(2)}%`;
 	}
 
-	static formatAddress(address) {
+	static formatAddress(address, length=8) {
 		if (!address) {
 			return '';
 		}
-		const ellipsizedAddress = `${address.substr(0, 4)}…${address.substr(40)}`;
+		const ellipsizedAddress = `${address.substr(0, 2 + length / 2)}…${address.substr(42 - length / 2)}`;
 		return ellipsizedAddress;
 	}
 

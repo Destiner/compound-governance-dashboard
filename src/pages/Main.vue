@@ -278,7 +278,7 @@ export default {
 			return Formatter.formatRatio(Converter.fromWad(value));
 		},
 		formatAddress(value) {
-			return Formatter.formatAddress(value);
+			return Formatter.formatAddress(value, 4);
 		},
 		formatDuration(value) {
 			return Formatter.formatDuration(value);
