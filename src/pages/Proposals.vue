@@ -13,6 +13,7 @@
 					</div>
 					<div>
 						{{ formatState(proposal.state) }}
+						(👍 {{ formatVotes(proposal.votes.for) }} / 👎 {{ formatVotes(proposal.votes.against) }})
 					</div>
 				</div>
 				<div class="changes">
@@ -41,6 +42,7 @@ import { ethers } from 'ethers';
 import governorAbi from '../abi/governor.json';
 
 import Formatter from '../utils/formatter.js';
+import Converter from '../utils/converter.js';
 
 const infuraKey = '2c010c2fdb8b4ef1a7617571553fc982';
 const provider = new ethers.providers.InfuraProvider('ropsten', infuraKey);
@@ -94,7 +96,9 @@ export default {
 		formatAddress(value) {
 			return Formatter.formatAddress(value);
 		},
-		
+		formatVotes(votes) {
+			return Formatter.formatMultiplier(Converter.fromWad(votes), 0);
+		},
 		formatTarget(value) {
 			for (const contract in addresses) {
 				if (contract == 'tokens') {
@@ -200,6 +204,10 @@ export default {
 				const state = data[3 * i + 2];
 
 				const id = proposalData.id.toNumber();
+				const votes = {
+					'for': proposalData.forVotes.toString(),
+					'against': proposalData.againstVotes.toString(),
+				};
 
 				const changes = [];
 				const actionCount = actions[0].length;
@@ -219,6 +227,7 @@ export default {
 				const proposal = {
 					id,
 					state,
+					votes,
 					changes,
 				};
 				proposals.push(proposal);
